@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
 import androidx.recyclerview.widget.RecyclerView
+import datanapps.roomapi.roomdatabase.Book
 
 class BooksAdapter(private val context: Context, private val moviesList: List<Book>) : RecyclerView.Adapter<BooksAdapter.UserViewHolder>() {
 
