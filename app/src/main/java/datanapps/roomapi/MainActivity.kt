@@ -10,6 +10,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import datanapps.roomapi.roomdatabase.Book
 import java.util.*
+import androidx.test.orchestrator.junit.BundleJUnitUtils.getDescription
+import android.provider.ContactsContract.CommonDataKinds.Note
+import androidx.annotation.Nullable
+import datanapps.roomapi.roomdatabase.BookRepository
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,8 +29,10 @@ class MainActivity : AppCompatActivity() {
         // set floating action
         val fab = findViewById<FloatingActionButton>(R.id.fab_bar)
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+           /* Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()*/
+
+
         }
 
         // set recycle view
@@ -43,7 +50,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private//---------------------------------------//
     val bookList: List<Book>
         get() {
 
@@ -141,4 +147,23 @@ class MainActivity : AppCompatActivity() {
             return bookList
         }
 
+
+    private  fun getRecordFromDB(){
+        val noteRepository = BookRepository(applicationContext)
+
+        noteRepository.getTasks().observe(lifecycle., object : Observer<List<Book>>() {
+            fun onChanged(@Nullable notes: List<Note>) {
+                for (note in notes) {
+                  /*  println("-----------------------")
+                    System.out.println(note.getId())
+                    System.out.println(note.getTitle())
+                    System.out.println(note.getDescription())
+                    System.out.println(note.getCreatedAt())
+                    System.out.println(note.getModifiedAt())
+                    System.out.println(note.getPassword())
+                    System.out.println(note.isEncrypt())*/
+                }
+            }
+        })
+    }
 }
