@@ -22,6 +22,7 @@ class BooksAdapter(private val context: Context) : RecyclerView.Adapter<BooksAda
 
     fun updateBookList(moviesList: List<Book>){
         this.moviesList = moviesList
+        notifyDataSetChanged()
     }
 
     fun deleteClickListener(clickListener: View.OnClickListener){

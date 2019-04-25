@@ -3,6 +3,7 @@ package datanapps.roomapi
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -12,6 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import datanapps.roomapi.roomdatabase.Book
 import datanapps.roomapi.roomdatabase.BookRepository
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,10 +32,10 @@ class MainActivity : AppCompatActivity() {
         // set floating action
         val fab = findViewById<FloatingActionButton>(R.id.fab_bar)
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                     .setAction("Action", null).show()
-            addBook()
 
+
+            addBook()
+            
         }
 
         // set recycle view
@@ -49,11 +51,12 @@ class MainActivity : AppCompatActivity() {
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.adapter = booksAdapter
         booksAdapter.deleteClickListener(View.OnClickListener {
-            val noteRepository = BookRepository(applicationContext)
 
-            var book = it.getTag() 
-            if(book is Book) {
-                noteRepository.deleteBook(book)
+            var book = it.getTag()
+            if (book is Book) {
+                deleteAlertDialog(book)
+
+
             }
 
         })
@@ -66,31 +69,64 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private fun getBookListFromRecordFromDB() {
-        val noteRepository = BookRepository(applicationContext)
-        noteRepository.getAllBookList.observe(this, androidx.lifecycle.Observer {
-            booksAdapter.updateBookList(it)
-        })
+        Handler().postDelayed({
+            val noteRepository = BookRepository(applicationContext)
+            noteRepository.getAllBookList.observe(this, androidx.lifecycle.Observer {
+                booksAdapter.updateBookList(it)
+            })
+        }, 1500)
+
 
     }
 
 
-    private fun addBook(){
-
+    private fun addBook() {
         val noteRepository = BookRepository(applicationContext)
-
         // Start a coroutine
+        var book = Book()
+        book.bookTitle = "Book Name"+(booksAdapter.itemCount+1)
+        book.authorName = "Author "+(booksAdapter.itemCount+1)
+        book.publishedYear = 2000 +(booksAdapter.itemCount+1)
+        noteRepository.insertTask(book)
+        getBookListFromRecordFromDB()
+    }
 
-            var book = Book()
-            book.bookTitle = "History-books-for-Kids"
-            book.authorName = "unknown"
-            book.publishedYear = 2000
-            noteRepository.insertTask(book)
 
-            getBookListFromRecordFromDB()
+    private fun deleteBook(book: Book){
+        val noteRepository = BookRepository(applicationContext)
+        noteRepository.deleteBook(book)
+        getBookListFromRecordFromDB()
+    }
+
+    fun deleteAlertDialog(book: Book) {
+        val builder = AlertDialog.Builder(this@MainActivity)
+
+        // Set the alert dialog title
+        builder.setTitle("Delete Book")
+
+        // Display a message on alert dialog
+        builder.setMessage("Are you want to delete this book")
+
+        // Set a positive button and its click listener on alert dialog
+        builder.setPositiveButton("YES") { dialog, which ->
+            // Do something when user press the positive button
+            Snackbar.make(root_layout, "Books Deleted", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            deleteBook(book);
+        }
+
+        // Display a negative button on alert dialog
+        builder.setNegativeButton("No") { dialog, which ->
+
+        }
 
 
+        // Finally, make the alert dialog using builder
+        val dialog: AlertDialog = builder.create()
+
+        // Display the alert dialog on app interface
+        dialog.show()
     }
 
 }
