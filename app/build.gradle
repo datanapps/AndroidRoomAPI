@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: "kotlin-kapt"
 
 android {
     compileSdkVersion 28
@@ -47,16 +48,13 @@ dependencies {
     // recycle view
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha04'
 
-
-    // glide
-
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
-
     // ROOM API
-    implementation 'android.arch.persistence.room:runtime:1.1.1'
-    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
+    implementation "androidx.room:room-runtime:2.0.0"
+    kapt "androidx.room:room-compiler:2.0.0"
 
+
+    // Run programm in background
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
