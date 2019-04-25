@@ -50,7 +50,7 @@
     apply plugin: "kotlin-kapt"
     
     
-  ###Create an entity means a table (here i did for book)
+  ### Create an entity means a table (here i did for book)
   
       package datanapps.roomapi.roomdatabase
 
@@ -66,7 +66,7 @@
         var publishedYear: Int = 0
     }
     
-    ###Create an DAO class means a medium to access table record (here i did for BookDAO)
+### Create an DAO class means a medium to access table record (here i did for BookDAO)
     
     package datanapps.roomapi.roomdatabase
 
@@ -105,7 +105,7 @@
     fun deleteTask(note: Book)
     }
     
-   ###Finally create a table for database means create a table for application
+   ### Finally create a table for database means create a table for application
    
        package datanapps.roomapi.roomdatabase
 
@@ -122,12 +122,12 @@
     
 ### In Application we perform CRUD Operation
 
-Delete : 
+### Delete : 
 
     val noteRepository = BookRepository(applicationContext)
         noteRepository.deleteBook(book)
            
- Insert : 
+ ### Insert : 
  
     val noteRepository = BookRepository(applicationContext)
         var book = Book()
@@ -136,7 +136,7 @@ Delete :
             book.publishedYear = 2000
             noteRepository.insertTask(book)
     
- Fetch All Record : 
+ ### Fetch All Record : 
  
      val noteRepository = BookRepository(applicationContext)
             noteRepository.getAllBookList.observe(this, androidx.lifecycle.Observer {
